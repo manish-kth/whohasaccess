@@ -1,5 +1,5 @@
 # Build the static site, then serve it with a small Caddy (a reverse proxy in front handles TLS).
-FROM node:22-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
