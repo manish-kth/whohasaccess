@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens. Tailwind colors read these (see tailwind.config.js); charts use
+   the --c-* values directly. Light first, dark under .dark. */
+:root {
+  --bg: 245 247 251;
+  --surface: 255 255 255;
+  --surface-2: 248 250 252;
+  --line: 226 232 240;
+  --ink: 15 23 42;
+  --ink-2: 71 85 105;
+  --ink-3: 148 163 184;
+  --brand: 47 107 255;
+  --brand-soft: 234 241 255;
+  --danger: 225 29 72;
+  --danger-soft: 255 241 244;
+  --warn: 217 119 6;
+  --warn-soft: 255 247 232;
+  --ok: 5 150 105;
+  --ok-soft: 236 253 245;
+  --violet: 124 58 237;
+  --violet-soft: 245 240 255;
+
+  /* exposure palette (most to least exposed) */
+  --c-public-web: #be123c;
+  --c-public: #e11d48;
+  --c-external: #d97706;
+  --c-domain: #7c3aed;
+  --c-internal: #2f6bff;
+  --c-private: #10b981;
+  --c-stale: #64748b;
+  --c-sensitive: #db2777;
+
+  --surface-hex: #ffffff;
+  --line-hex: #e2e8f0;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 9 13 22;
+  --surface: 17 24 39;
+  --surface-2: 24 32 48;
+  --line: 43 54 77;
+  --ink: 236 241 250;
+  --ink-2: 164 178 200;
+  --ink-3: 104 120 146;
+  --brand: 96 143 255;
+  --brand-soft: 24 38 74;
+  --danger: 251 113 133;
+  --danger-soft: 60 20 34;
+  --warn: 251 191 36;
+  --warn-soft: 58 42 14;
+  --ok: 52 211 153;
+  --ok-soft: 10 50 40;
+  --violet: 167 139 250;
+  --violet-soft: 42 30 70;
+
+  --c-public-web: #fb7185;
+  --c-public: #f43f5e;
+  --c-external: #fbbf24;
+  --c-domain: #a78bfa;
+  --c-internal: #60a5fa;
+  --c-private: #34d399;
+  --c-stale: #94a3b8;
+  --c-sensitive: #f472b6;
+
+  --surface-hex: #111827;
+  --line-hex: #2b364d;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; }
+body { background: rgb(var(--bg)); color: rgb(var(--ink)); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgb(var(--ink-3) / 0.5); border-radius: 6px; }
+
+.card { @apply bg-surface rounded-2xl ring-1 ring-line shadow-card; }
+.btn { @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition disabled:opacity-40 disabled:pointer-events-none whitespace-nowrap; }
+.btn-primary { @apply btn bg-brand text-white hover:brightness-110; }
+.btn-ghost { @apply btn text-ink2 hover:bg-surface2 hover:text-ink; }
+.btn-danger { @apply btn bg-danger-soft text-danger ring-1 ring-danger/30 hover:bg-danger hover:text-white; }
+.btn-warn { @apply btn bg-warn-soft text-warn ring-1 ring-warn/30 hover:bg-warn hover:text-white; }
+.btn-outline { @apply btn bg-surface text-ink2 ring-1 ring-line hover:ring-brand hover:text-ink; }
+.chip { @apply px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap transition; }
+.chip-on { @apply chip bg-ink text-bg; }
+.chip-off { @apply chip text-ink2 hover:bg-surface2; }
+.input { @apply w-full px-3 py-2 rounded-lg bg-surface ring-1 ring-line focus:ring-2 focus:ring-brand outline-none text-sm text-ink placeholder:text-ink3; }
+.select { @apply px-2.5 py-2 rounded-lg bg-surface ring-1 ring-line text-sm text-ink2 outline-none focus:ring-2 focus:ring-brand; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* hero glow */
+.hero {
+  background:
+    radial-gradient(900px 300px at 10% -20%, rgb(var(--brand) / 0.18), transparent 60%),
+    radial-gradient(700px 260px at 90% -10%, rgb(var(--violet) / 0.14), transparent 60%);
+}

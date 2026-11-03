@@ -1,0 +1,40 @@
+# In-container static file server. TLS is handled by your reverse proxy in front, so plain HTTP on :8080.
+{
+	admin off
+	auto_https off
+}
+
+:8080 {
+	root * /srv
+	encode gzip
+
+	# The CSP allows only what the app needs: Google Identity Services (sign-in),
+	# the Drive / Drive Activity / userinfo APIs, Google Fonts, and Google profile
+	# photos. Everything else (default-src) is blocked.
+	header {
+		Content-Security-Policy "default-src 'none'; script-src 'self' https://accounts.google.com/gsi/client; connect-src 'self' https://www.googleapis.com https://driveactivity.googleapis.com https://accounts.google.com/gsi/; frame-src https://accounts.google.com/gsi/; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		Cross-Origin-Opener-Policy "same-origin-allow-popups"
+		Cross-Origin-Resource-Policy "same-origin"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+		-Server
+	}
+
+	handle /healthz {
+		respond "ok" 200
+	}
+
+	# Hashed build assets never change, so cache them for a long time.
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+	@pages not path /assets/*
+	header @pages Cache-Control "no-cache"
+
+	handle {
+		try_files {path} /index.html
+		file_server
+	}
+}
